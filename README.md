@@ -14,7 +14,7 @@ Leverages the TikTok TTS API to send voice messages to Discord.
 
 Create a `.env` file with the following ⬇️
 
-````sh
+```sh
 TIKTOK-TTS-DISCORD-TOKEN=<your Discord token>
 ```
 
@@ -27,4 +27,4 @@ Then just run `python3 tiktok-tts-discord.py` 🚀
 
 - `/say script:<script>`
   Join the current voice channel and say the script out loud.
-````
+
