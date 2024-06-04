@@ -1,3 +1,56 @@
+# Isabelle
+
+Isabelle is a fork of tiktok-tts-discord, a bot that uses the TikTok TTS API to talk in Discord voice channels.
+
+It can use any (documented) voice, as well as repeat anything a user says in a specific channel.
+
+### Running
+
+Ensure you have all the dependencies listed in `requirements.txt`.
+
+Isabelle requires a TikTok Session ID to run. [See this wiki page for how to obtain yours.](https://github.com/oscie57/tiktok-voice/wiki/Obtaining-SessionID)
+
+Create a `.env` file containing:
+
+```
+TIKTOK-TTS-DISCORD-TOKEN=<your Discord token>
+TIKTOK-SESSION-ID=<your TikTok session ID>
+```
+
+And then run `python3 tiktok-tts-discord.py`. The bot will throw an error if you're missing either value.
+
+### Commands
+
+- `/listen <speaker>`<br>
+*Tells the bot to repeat anything you send in the current channel in your current voice call. `speaker` specifies voice.*
+
+- `/dismiss`<br>
+*Undoes `/listen`. The bot will automatically disconnect if it has no one else it's copying.*
+
+- `/shush`<br>
+*Interrupts the current voice message. Will announce who ran it.*
+
+- `/list`<br>
+*Sends a direct message containing all available voices.*
+
+- `/say <script> <speaker>`<br>
+*Says one thing in the current voice call. Can't be ran if the bot is in a different channel. `script` is the message, `speaker` specifies voice.*
+
+- `/tts <script> <speaker>`<br>
+*Generates a .MP3 file from text. `script` is the message, `speaker` specifies voice.*
+
+### Credits
+
+eviemaybe for the name suggestion and for helping me find some early bugs,
+
+[oscie57](https://github.com/oscie57/tiktok-voice) for documenting the TikTok TTS API and implementing it in Python,
+
+[m4xic](https://github.com/m4xic/tiktok-tts-discord/tree/main) for creating tiktok-tts-discord,
+
+as well as everyone credited in the original README, which can be found below:
+
+* * *
+
 # tiktok-tts-discord
 
 Leverages the TikTok TTS API to send voice messages to Discord.
