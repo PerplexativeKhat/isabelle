@@ -10,7 +10,6 @@ from FFmpegPCMAudio import FFmpegPCMAudio
 import json
 import asyncio
 
-
 dotenv.load_dotenv()
 intents = discord.Intents.default()
 intents.message_content = True
@@ -24,9 +23,11 @@ SESSION_ID = getenv("TIKTOK-SESSION-ID")
 
 res = json.load(open(file="resources.json"))
 speakers = res["speakers"]
+speakers_autocomplete = discord.utils.basic_autocomplete(speakers)
 messages = res["messages"]
 echos = dict()
 
+# TODO: use aiohttp instead of requests
 def get_tts(script, speaker):
     script = script.replace("\n", " ").replace(
         " ", "+").replace("&", "and")
@@ -41,9 +42,9 @@ def get_tts(script, speaker):
 @bot.slash_command(description = messages["desc_listen"])
 async def listen(
     ctx,
-    speaker: discord.Option(str, messages["desc_opt_speaker"], autocomplete=discord.utils.basic_autocomplete(speakers), default="English US - Female 1")):
+    speaker: discord.Option(str, messages["desc_opt_speaker"], autocomplete=speakers_autocomplete, default="English US - Female 1")):
     if ctx.author.voice:
-        if ctx.voice_client and ctx.author.voice.channel != ctx.voice.channel:
+        if ctx.voice_client and ctx.author.voice.channel != ctx.voice_client.channel:
             await ctx.respond(messages["err_diff_channel"].format(ctx.voice_client.channel.mention), ephemeral = True)
         else:
             try: await ctx.author.voice.channel.connect()
@@ -106,10 +107,10 @@ async def on_voice_state_update(member, before, after):
 async def say(
     ctx,
     script: discord.Option(str, messages["desc_opt_script"]),
-    speaker: discord.Option(str, messages["desc_opt_speaker"], autocomplete=discord.utils.basic_autocomplete(speakers), default="English US - Female 1")
+    speaker: discord.Option(str, messages["desc_opt_speaker"], autocomplete=speakers_autocomplete, default="English US - Female 1")
     ):
     if ctx.author.voice:
-        if ctx.voice_client and ctx.author.voice.channel != ctx.voice.channel:
+        if ctx.voice_client and ctx.author.voice.channel != ctx.voice_client.channel:
             ctx.respond(messages["err_diff_channel"].format(ctx.voice_client.channel.mention), ephemeral = True)
         else:
             try: await ctx.author.voice.channel.connect()
@@ -125,7 +126,7 @@ async def say(
 async def tts(
     ctx,
     script: discord.Option(str, messages["desc_opt_script"]),
-    speaker: discord.Option(str, messages["desc_opt_speaker"], autocomplete=discord.utils.basic_autocomplete(speakers))
+    speaker: discord.Option(str, messages["desc_opt_speaker"], autocomplete=speakers_autocomplete, default="English US - Female 1")
     ):
     if len(script) > 200:
         await ctx.respond(messages["err_char_cap"].format(len(ctx.message.content)))
