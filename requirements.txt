@@ -1,3 +1,4 @@
-pycord
+py=cord
 python-dotenv
 requests
+pynacl
