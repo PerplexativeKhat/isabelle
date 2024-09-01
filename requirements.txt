@@ -1,4 +1,4 @@
-py=cord
+py-cord
 python-dotenv
 requests
 pynacl

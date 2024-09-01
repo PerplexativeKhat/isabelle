@@ -5,10 +5,10 @@ import base64
 # Uses pycord, not discord.py (docs.pycord.dev)
 import discord
 from io import BytesIO
-import time
 from FFmpegPCMAudio import FFmpegPCMAudio
-import json
 import asyncio
+
+from resources import speakers, messages
 
 dotenv.load_dotenv()
 intents = discord.Intents.default()
@@ -21,10 +21,7 @@ ENDPOINT_URL = "https://api16-normal-v6.tiktokv.com/media/api/text/speech/invoke
 USER_AGENT = "com.zhiliaoapp.musically/2022600030 (Linux; U; Android 7.1.2; es_ES; SM-G988N; Build/NRD90M;tt-ok/3.12.13.1)"
 SESSION_ID = getenv("TIKTOK-SESSION-ID")
 
-res = json.load(open(file="resources.json"))
-speakers = res["speakers"]
 speakers_autocomplete = discord.utils.basic_autocomplete(speakers)
-messages = res["messages"]
 echos = dict()
 
 # TODO: use aiohttp instead of requests
@@ -66,7 +63,7 @@ async def dismiss(ctx):
 
 @bot.slash_command(description = messages["desc_shush"])
 async def shush(ctx):
-    if ctx.voice_client and ctx.author.voice.channel == ctx.voice.channel:
+    if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
         await ctx.voice_client.stop()
         await ctx.respond(messages["rsp_shush"].format(ctx.author.mention), ephemeral = True)
     else:
