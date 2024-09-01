@@ -63,12 +63,14 @@ async def dismiss(ctx):
 
 @bot.slash_command(description = messages["desc_shush"])
 async def shush(ctx):
-    if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
-        await ctx.voice_client.stop()
-        await ctx.respond(messages["rsp_shush"].format(ctx.author.mention), ephemeral = True)
+    if ctx.author.voice:
+        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
+            ctx.voice_client.stop()
+            await ctx.respond(messages["rsp_shush"].format(ctx.author.mention))
+        else:
+            await ctx.respond(messages["err_diff_channel"].format(ctx.voice_client.channel.mention), ephemeral = True)
     else:
-        await ctx.respond(messages["err_diff_channel"], ephemeral = True)
-
+        await ctx.respond(messages["err_no_channel"], ephemeral = True)
 
 @bot.slash_command(description = messages["desc_list"])
 async def list(ctx):
@@ -108,11 +110,12 @@ async def say(
     ):
     if ctx.author.voice:
         if ctx.voice_client and ctx.author.voice.channel != ctx.voice_client.channel:
-            ctx.respond(messages["err_diff_channel"].format(ctx.voice_client.channel.mention), ephemeral = True)
+            await ctx.respond(messages["err_diff_channel"].format(ctx.voice_client.channel.mention), ephemeral = True)
         else:
             try: await ctx.author.voice.channel.connect()
             except discord.ClientException: pass
             ctx.voice_client.play(FFmpegPCMAudio(BytesIO(get_tts(script, speakers[speaker])).getvalue(), pipe=True))
+            await ctx.respond(messages["rsp_say"], ephemeral = True)            
             while ctx.voice_client.is_playing(): await asyncio.sleep(1)
             if len(echos) == 0:
                 await ctx.voice_client.disconnect()

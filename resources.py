@@ -69,10 +69,13 @@ messages = {
     'desc_opt_speaker': 'The voice to use.',
     'desc_opt_hide': 'Whether to hide the output',
     'rsp_listen': "I'll repeat anything you say in {} using `{}` as a voice.\n(Type /dismiss for me to stop.)",
-    'rsp_dismiss': "I'll stop repeating  you.", 'rsp_shush': '{} interrupted the current message.',
-    'rsp_connect': "I'm connecting to {}...", 'rsp_list': "I've sent you a list in DMs.",
+    'rsp_dismiss': "I'll stop repeating  you.",
+    'rsp_shush': '{} interrupted the current message.',
+    'rsp_connect': "I'm connecting to {}...",
+    'rsp_list': "I've sent you a list in DMs.",
+    'rsp_say': "Playing your message.",
     'err_no_channel': 'You need to be in a voice channel...',
-    'err_diff_channel': "I'm already in {}...",
+    'err_diff_channel': "I'm in {}...",
     'err_not_listening': "I wasn't copying you.",
     'err_char_cap': 'Your message is too long! ({} Characters.)\nThe TikTok API blocks requests over 200 characters.'
 }
